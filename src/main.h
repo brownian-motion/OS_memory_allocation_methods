@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <stdio.h>
 #include "process_list.h"
@@ -35,50 +35,50 @@ process_t* processes[MAX_NUM_PROCESSES];
 
 memblock_t* (* fit_function)(memblock_t**, int) = get_first_fit_block;
 
-void print_processes(){
-	for(int i = 0 ; i < curr_size((void**) processes); i++){
+void print_processes() {
+	for (int i = 0 ; i < curr_size((void**) processes); i++) {
 		fprint_process(stdout, processes[i]);
 		fprintf(stdout, " ");
 	}
 	fprintf(stdout, "\n");
 }
 
-void print_free_memory(){
+void print_free_memory() {
 	debugln("Processes:");
-	for(int i = 0 ; i < curr_size((void**) free_memory); i++){
+	for (int i = 0 ; i < curr_size((void**) free_memory); i++) {
 		fprint_memblock(stdout, free_memory[i]);
 		fprintf(stdout, " ");
 	}
 	fprintf(stdout, "\n");
 }
 
-int find_insertion_location(memblock_t** arr, memblock_t* block){
-	for(int i = 0 ; i < curr_size((void**) arr) ; i++){
-		if(memblock_left_comes_before_right(block, arr[i])){
+int find_insertion_location(memblock_t** arr, memblock_t* block) {
+	for (int i = 0 ; i < curr_size((void**) arr) ; i++) {
+		if (memblock_left_comes_before_right(block, arr[i])) {
 			return i;
 		}
 	}
 	return curr_size((void**)arr);
 }
 
-void connect_to_next_memory_block(memblock_t** arr, int index){
-	if(index >= 0 && arr[index+1] != NULL){
-		if(memblock_are_continuous(arr[index], arr[index+1])) {
-			memblock_merge(arr[index], arr[index+1]);
-			free(remove_from_array((void**)arr, index+1)); //get rid of the second one, since the first was merged in
+void connect_to_next_memory_block(memblock_t** arr, int index) {
+	if (index >= 0 && arr[index + 1] != NULL) {
+		if (memblock_are_continuous(arr[index], arr[index + 1])) {
+			memblock_merge(arr[index], arr[index + 1]);
+			free(remove_from_array((void**)arr, index + 1)); //get rid of the second one, since the first was merged in
 		}
 	}
 }
 
-void reconnect_memory_blocks_at(memblock_t** arr, int index){
+void reconnect_memory_blocks_at(memblock_t** arr, int index) {
 	//merge on the right
 	connect_to_next_memory_block(arr, index);
 
 	//then merge on the left (merging left shifts the array elements)
-	connect_to_next_memory_block(arr, index-1);
+	connect_to_next_memory_block(arr, index - 1);
 }
 
-void restore_memory(memblock_t* block){
+void restore_memory(memblock_t* block) {
 	// debug("Restoring block ");
 	// fprint_memblock(stderr, block);
 	// debugln("");
@@ -88,7 +88,7 @@ void restore_memory(memblock_t* block){
 	reconnect_memory_blocks_at(free_memory, reinsert_index);
 }
 
-void release_process(char* name){
+void release_process(char* name) {
 	// debug("Actually releasing process ");
 	// debugln(name);
 	process_t* process = remove_process(processes, name);
@@ -98,7 +98,7 @@ void release_process(char* name){
 	free( process );
 }
 
-void make_process(char* name, int memsize){
+void make_process(char* name, int memsize) {
 	//assume first fit
 	// char* name_copy = alloc_str_copy(name);
 	memblock_t* big_enough_block = fit_function(free_memory, memsize);

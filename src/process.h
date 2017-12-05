@@ -14,24 +14,24 @@ typedef struct process {
 	memblock_t* memory;
 } process_t;
 
-process_t* process_alloc(int num){
+process_t* process_alloc(int num) {
 	return (process_t*) malloc(sizeof(process_t) * num);
 }
 
-process_t* process_new(char* name, memblock_t* memory){
+process_t* process_new(char* name, memblock_t* memory) {
 	process_t* out = process_alloc(1);
 	*out = (process_t) {name, memory};
 	return out;
 }
 
-void fprint_process(FILE* file, process_t* process){
+void fprint_process(FILE* file, process_t* process) {
 	fprintf(file,
-		"(%s, %d, %d)",
-		process->name,
-		process->memory->start_index,
-		process->memory->size);
+	        "(%s, %d, %d)",
+	        process->name,
+	        process->memory->start_index,
+	        process->memory->size);
 }
 
-int process_name_matches(process_t* process, char* name){
+int process_name_matches(process_t* process, char* name) {
 	return !strcmp(process->name, name);
 }
