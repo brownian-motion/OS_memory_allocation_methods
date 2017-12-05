@@ -12,5 +12,5 @@ test:
 	mkdir $@
 
 test%: test/%.in proj2 | test
-	./proj2 BESTFIT 1024 $<
-	./proj2 FIRSTFIT 1024 $<
+	./proj2 BESTFIT 1024 $< 1>&2
+	./proj2 FIRSTFIT 1024 $< 1>&2	

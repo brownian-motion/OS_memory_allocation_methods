@@ -26,7 +26,7 @@ process_t* process_new(char* name, memblock_t* memory){
 
 void fprint_process(FILE* file, process_t* process){
 	fprintf(file,
-		"%s@%d: %d",
+		"(%s, %d, %d)",
 		process->name,
 		process->memory->start_index,
 		process->memory->size);

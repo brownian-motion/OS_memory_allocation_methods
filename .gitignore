@@ -1,3 +1,4 @@
 *.exe
 proj2
+proj2.exe.stackdump
 cmake-build-default/*

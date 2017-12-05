@@ -1,10 +1,12 @@
 #pragma once 
 
+#include <stdio.h>
 #include "process_list.h"
 #include "fit_functions.h"
 #include "memblock.h"
 #include "split.h"
 #include "debug.h"
+#include "str_helpers.h"
 
 #define streq(a, b) (!strcmp(a, b))
 
@@ -36,15 +38,18 @@ memblock_t* (* fit_function)(memblock_t**, int) = get_first_fit_block;
 void print_processes(){
 	for(int i = 0 ; i < curr_size((void**) processes); i++){
 		fprint_process(stdout, processes[i]);
-		fprintf(stdout, "\n");
+		fprintf(stdout, " ");
 	}
+	fprintf(stdout, "\n");
 }
 
 void print_free_memory(){
+	debugln("Processes:");
 	for(int i = 0 ; i < curr_size((void**) free_memory); i++){
 		fprint_memblock(stdout, free_memory[i]);
-		fprintf(stdout, "\n");
+		fprintf(stdout, " ");
 	}
+	fprintf(stdout, "\n");
 }
 
 int find_insertion_location(memblock_t** arr, memblock_t* block){
@@ -87,12 +92,15 @@ void release_process(char* name){
 	// debug("Actually releasing process ");
 	// debugln(name);
 	process_t* process = remove_process(processes, name);
+	// free( name );
+	// process->name = NULL; //be safe
 	restore_memory(process->memory);
 	free( process );
 }
 
 void make_process(char* name, int memsize){
 	//assume first fit
+	// char* name_copy = alloc_str_copy(name);
 	memblock_t* big_enough_block = fit_function(free_memory, memsize);
 	append_to_end((void**) processes, process_new(name, big_enough_block));
 }

@@ -6,7 +6,7 @@
 
 /**
  * Defines a bunch of convenience functions to 
- * interact with primitive arrays of pointers.
+ * interact with primitive, NULL-terminated arrays of pointers.
  *
  * This is useful to manipulate both arrays of
  * memory blocks but also arrays of processes

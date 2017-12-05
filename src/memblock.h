@@ -90,5 +90,5 @@ memblock_t* memblock_get_last(memblock_t* one, memblock_t* two){
 }
 
 void fprint_memblock(FILE* file, memblock_t* block){
-	fprintf(file, "@%d: %d", block->start_index, block->size);
+	fprintf(file, "(%d, %d)", block->start_index, block->size);
 }
